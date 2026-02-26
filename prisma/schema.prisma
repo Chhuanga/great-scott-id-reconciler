@@ -1,0 +1,42 @@
+// Doc's secret identity lives here. Every row is a breadcrumb.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LinkPrecedence {
+  primary
+  secondary
+}
+
+// The one table to rule them all.
+// Self-referencing so a secondary can point back to its primary.
+model Contact {
+  id             Int          @id @default(autoincrement())
+  phoneNumber    String?
+  email          String?
+  linkedId       Int?
+  linkPrecedence LinkPrecedence
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  // The parent (if this contact is secondary)
+  linkedContact  Contact?  @relation("ContactLink", fields: [linkedId], references: [id])
+  // All secondaries that point back to this contact
+  linkedContacts Contact[] @relation("ContactLink")
+
+  // Fast lookups — because O(n) table scans are not great scott
+  @@index([email])
+  @@index([phoneNumber])
+  @@index([linkedId])
+
+  @@map("Contact")
+}
