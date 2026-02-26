@@ -1,4 +1,5 @@
 import express from 'express';
+import { identifyController } from './identify.controller';
 
 const app = express();
 app.use(express.json());
@@ -9,14 +10,10 @@ app.get('/', (_req, res) => {
   res.json({ message: "Great Scott! The server is alive. Now go hit /identify." });
 });
 
-// Phase 2 will wire up the real endpoint here.
-// For now, we're just making sure the lights come on.
-app.post('/identify', (_req, res) => {
-  res.status(501).json({ message: "Not implemented yet. We're still in 1985." });
-});
+app.post('/identify', identifyController);
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`Great wow the Server is running on port ${PORT}`);
 });
 
 export default app;
