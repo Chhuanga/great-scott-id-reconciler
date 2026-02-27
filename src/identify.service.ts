@@ -1,4 +1,4 @@
-import { Contact, LinkPrecedence, Prisma } from './generated/prisma';
+import { Contact, LinkPrecedence, Prisma } from '../generated/prisma';
 import prisma from './db';
 import { buildResponse, findPrimaryContact } from './identify.aggregator';
 import { IdentifyRequest, IdentifyResponse } from './identify.types';
