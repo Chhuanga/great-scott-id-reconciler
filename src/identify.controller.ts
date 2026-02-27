@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
 import { identify } from './identify.service';
+import { validateIdentifyBody } from './identify.validator';
 
 export async function identifyController(req: Request, res: Response) {
-  const { email, phoneNumber } = req.body;
+  const validation = validateIdentifyBody(req.body);
 
-  // At least one of these needs to exist. We're not psychic.
-  if (!email && !phoneNumber) {
-    res.status(400).json({ error: 'Provide at least an email or phoneNumber.' });
+  if (!validation.valid) {
+    res.status(400).json({ error: validation.message });
     return;
   }
 
   try {
-    const result = await identify({ email, phoneNumber });
+    const result = await identify(validation.data);
     res.status(200).json(result);
   } catch (error) {
     console.error('Identity crisis:', error);
