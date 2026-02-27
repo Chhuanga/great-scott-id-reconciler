@@ -11,7 +11,7 @@ This service fixes that. It reconciles Doc's scattered contact points — across
 ## Live Endpoint
 
 ```
-POST https://<your-deployment-url>/identify
+POST https://great-scott-id-reconciler-production.up.railway.app/identify
 ```
 
 ## Getting Started
